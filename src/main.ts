@@ -7,8 +7,8 @@ import './i18n';
   await loadImages();
   const logo = new LogoCanvas();
   logo.draw();
-  
-  // 新增：颜色选择器默认值同步
+
+  // ========== 新增：同步颜色选择器的默认值 ==========
   const colorL = document.querySelector('#colorL') as HTMLInputElement;
   const colorR = document.querySelector('#colorR') as HTMLInputElement;
   if (colorL) colorL.value = '#128AFA';
