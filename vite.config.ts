@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/logo-bluearchive-colormode/',
   build: {
     rollupOptions: {
       output: {
