@@ -26,9 +26,11 @@ export default class LogoCanvas {
   private textWidthR = 0;
   private graphOffset = graphOffset;
   private transparentBg = false;
-  private textColorL = '#128AFA'; // 左侧文字颜色
-  private textColorR = '#2B2B2B'; // 右侧文字颜色
-  
+
+  // ========== 新增：颜色属性 ==========
+  private textColorL = '#128AFA';
+  private textColorR = '#2B2B2B';
+
   constructor() {
     this.canvas = document.querySelector('#canvas')!;
     this.ctx = this.canvas.getContext('2d')!;
@@ -36,38 +38,32 @@ export default class LogoCanvas {
     this.canvas.width = canvasWidth;
     this.bindEvent();
   }
-  
-  // 新增：设置左侧文字颜色
+
+  // ========== 新增：设置颜色方法 ==========
   public setTextColorL(color: string) {
     this.textColorL = color;
     this.draw();
   }
-  
-  // 新增：设置右侧文字颜色
   public setTextColorR(color: string) {
     this.textColorR = color;
     this.draw();
   }
-  
+
   async draw() {
     const loading = document.querySelector('#loading')!;
     loading.classList.remove('hidden');
     const c = this.ctx;
-    //predict canvas width
     await loadFont(this.textL + this.textR);
     loading.classList.add('hidden');
     c.font = font;
     this.textMetricsL = c.measureText(this.textL);
     this.textMetricsR = c.measureText(this.textR);
     this.setWidth();
-    //clear canvas
     c.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    //Background
     if (!this.transparentBg) {
       c.fillStyle = '#fff';
       c.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
-    //guide line
     if (import.meta.env.DEV) {
       c.strokeStyle = '#00cccc';
       c.lineWidth = 1;
@@ -83,13 +79,14 @@ export default class LogoCanvas {
       c.lineTo(this.canvasWidthL + this.textWidthR, this.canvas.height);
       c.stroke();
     }
-    //blue text -> halo -> black text -> cross
     c.font = font;
-    c.fillStyle = this.textColorL; // 使用动态颜色
+
+    // ========== 修改：使用动态颜色 ==========
+    c.fillStyle = this.textColorL;
     c.textAlign = 'end';
     c.setTransform(1, 0, horizontalTilt, 1, 0, 0);
     c.fillText(this.textL, this.canvasWidthL, this.canvas.height * textBaseLine);
-    c.resetTransform(); //restore don't work
+    c.resetTransform();
     c.drawImage(
       window.halo,
       this.canvasWidthL - this.canvas.height / 2 + this.graphOffset.X,
@@ -97,7 +94,9 @@ export default class LogoCanvas {
       canvasHeight,
       canvasHeight
     );
-    c.fillStyle = this.textColorR; // 使用动态颜色
+
+    // ========== 修改：使用动态颜色 ==========
+    c.fillStyle = this.textColorR;
     c.textAlign = 'start';
     if (this.transparentBg) {
       c.globalCompositeOperation = 'destination-out';
@@ -179,8 +178,8 @@ export default class LogoCanvas {
       this.graphOffset.Y = parseInt(gy.value);
       this.draw();
     });
-    
-    // 新增：颜色选择器事件
+
+    // ========== 新增：颜色选择器事件 ==========
     const colorL = document.querySelector('#colorL')! as HTMLInputElement;
     const colorR = document.querySelector('#colorR')! as HTMLInputElement;
     colorL.addEventListener('input', (e) => {
@@ -199,7 +198,6 @@ export default class LogoCanvas {
     this.textWidthR =
       this.textMetricsR!.width +
       (textBaseLine * canvasHeight - this.textMetricsR!.fontBoundingBoxAscent) * horizontalTilt;
-    //extend canvas
     if (this.textWidthL + paddingX > canvasWidth / 2) {
       this.canvasWidthL = this.textWidthL + paddingX;
     } else {
