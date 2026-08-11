@@ -27,19 +27,31 @@ export default class LogoCanvas {
   private graphOffset = graphOffset;
   private transparentBg = false;
 
-  // ========== 新增：颜色属性 ==========
+  // ========== 颜色属性 ==========
   private textColorL = '#128AFA';
   private textColorR = '#2B2B2B';
+
+  // ========== 图片属性 ==========
+  private haloImg: HTMLImageElement;
+  private crossImg: HTMLImageElement;
 
   constructor() {
     this.canvas = document.querySelector('#canvas')!;
     this.ctx = this.canvas.getContext('2d')!;
     this.canvas.height = canvasHeight;
     this.canvas.width = canvasWidth;
+
+    // ========== 直接加载图片 ==========
+    this.haloImg = new Image();
+    this.haloImg.src = '/logo-bluearchive-colormode/images/halo.png';
+
+    this.crossImg = new Image();
+    this.crossImg.src = '/logo-bluearchive-colormode/images/cross.png';
+
     this.bindEvent();
   }
 
-  // ========== 新增：设置颜色方法 ==========
+  // ========== 设置颜色方法 ==========
   public setTextColorL(color: string) {
     this.textColorL = color;
     this.draw();
@@ -81,21 +93,27 @@ export default class LogoCanvas {
     }
     c.font = font;
 
-    // ========== 修改：使用动态颜色 ==========
+    // ========== 左侧文字 ==========
     c.fillStyle = this.textColorL;
     c.textAlign = 'end';
     c.setTransform(1, 0, horizontalTilt, 1, 0, 0);
     c.fillText(this.textL, this.canvasWidthL, this.canvas.height * textBaseLine);
     c.resetTransform();
-    c.drawImage(
-      window.halo,
-      this.canvasWidthL - this.canvas.height / 2 + this.graphOffset.X,
-      this.graphOffset.Y,
-      canvasHeight,
-      canvasHeight
-    );
 
-    // ========== 修改：使用动态颜色 ==========
+    // ========== 光环 ==========
+    if (this.haloImg.complete && this.haloImg.naturalWidth > 0) {
+      c.drawImage(
+        this.haloImg,
+        this.canvasWidthL - this.canvas.height / 2 + this.graphOffset.X,
+        this.graphOffset.Y,
+        canvasHeight,
+        canvasHeight
+      );
+    } else {
+      console.warn('halo 图片未加载完成');
+    }
+
+    // ========== 右侧文字 ==========
     c.fillStyle = this.textColorR;
     c.textAlign = 'start';
     if (this.transparentBg) {
@@ -108,6 +126,8 @@ export default class LogoCanvas {
     c.globalCompositeOperation = 'source-over';
     c.fillText(this.textR, this.canvasWidthL, this.canvas.height * textBaseLine);
     c.resetTransform();
+
+    // ========== 十字架 ==========
     const graph = {
       X: this.canvasWidthL - this.canvas.height / 2 + graphOffset.X,
       Y: this.graphOffset.Y,
@@ -130,14 +150,20 @@ export default class LogoCanvas {
     c.fillStyle = 'white';
     c.fill();
     c.globalCompositeOperation = 'source-over';
-    c.drawImage(
-      window.cross,
-      this.canvasWidthL - this.canvas.height / 2 + graphOffset.X,
-      this.graphOffset.Y,
-      canvasHeight,
-      canvasHeight
-    );
+
+    if (this.crossImg.complete && this.crossImg.naturalWidth > 0) {
+      c.drawImage(
+        this.crossImg,
+        this.canvasWidthL - this.canvas.height / 2 + graphOffset.X,
+        this.graphOffset.Y,
+        canvasHeight,
+        canvasHeight
+      );
+    } else {
+      console.warn('cross 图片未加载完成');
+    }
   }
+
   bindEvent() {
     const process = (id: 'textL' | 'textR', el: HTMLInputElement) => {
       this[id] = el.value;
@@ -179,7 +205,6 @@ export default class LogoCanvas {
       this.draw();
     });
 
-    // ========== 新增：颜色选择器事件 ==========
     const colorL = document.querySelector('#colorL')! as HTMLInputElement;
     const colorR = document.querySelector('#colorR')! as HTMLInputElement;
     colorL.addEventListener('input', (e) => {
@@ -191,6 +216,7 @@ export default class LogoCanvas {
       this.setTextColorR(target.value);
     });
   }
+
   setWidth() {
     this.textWidthL =
       this.textMetricsL!.width -
@@ -210,6 +236,7 @@ export default class LogoCanvas {
     }
     this.canvas.width = this.canvasWidthL + this.canvasWidthR;
   }
+
   generateImg() {
     let outputCanvas: HTMLCanvasElement;
     if (
@@ -244,6 +271,7 @@ export default class LogoCanvas {
       });
     });
   }
+
   saveImg() {
     this.generateImg().then((blob) => {
       const url = URL.createObjectURL(blob);
@@ -254,6 +282,7 @@ export default class LogoCanvas {
       URL.revokeObjectURL(url);
     });
   }
+
   async copyImg() {
     const blob = await this.generateImg();
     const cp = [new ClipboardItem({ 'image/png': blob })];
