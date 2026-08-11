@@ -1,14 +1,11 @@
 import './style.css';
 import LogoCanvas from './canvas';
-import loadImages from './utils/loadImages';
 import './i18n';
 
 (async function () {
-  await loadImages();
   const logo = new LogoCanvas();
   logo.draw();
 
-  // ========== 新增：同步颜色选择器的默认值 ==========
   const colorL = document.querySelector('#colorL') as HTMLInputElement;
   const colorR = document.querySelector('#colorR') as HTMLInputElement;
   if (colorL) colorL.value = '#128AFA';
