@@ -1,3 +1,6 @@
+import halo from '../assets/image/halo.png';
+import cross from '../assets/image/cross.png';
+
 const loadImg = (src: string): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
@@ -9,7 +12,7 @@ const loadImg = (src: string): Promise<HTMLImageElement> => {
 
 export default async () => {
   await Promise.all([
-    loadImg('/images/halo.png').then((img) => (window.halo = img)),
-    loadImg('/images/cross.png').then((img) => (window.cross = img)),
+    loadImg(halo).then((img) => (window.halo = img)),
+    loadImg(cross).then((img) => (window.cross = img)),
   ]);
 };
