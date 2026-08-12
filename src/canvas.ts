@@ -9,7 +9,7 @@ const {
   paddingX,
   hollowPath,
 } = settings;
-const font = `84px 'RoGSanSrfStd-Bd', 'GlowSansSC', sans-serif`;
+const font = `84px 'RoGSanSrfStd-Bd', 'GlowSansSC', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif`;
 
 export default class LogoCanvas {
   public canvas: HTMLCanvasElement;
@@ -29,6 +29,7 @@ export default class LogoCanvas {
   private haloImg: HTMLImageElement;
   private crossImg: HTMLImageElement;
   private imagesLoaded = 0;
+  private fontLoaded = false;
 
   constructor() {
     this.canvas = document.querySelector('#canvas')!;
@@ -75,15 +76,16 @@ export default class LogoCanvas {
     loading.classList.remove('hidden');
     const c = this.ctx;
 
-    // 强制等待字体加载完成
     try {
       await Promise.race([
-        document.fonts.load('84px RoGSanSrfStd-Bd'),
-        new Promise(resolve => setTimeout(resolve, 3000))
+        Promise.all([
+          document.fonts.load('84px RoGSanSrfStd-Bd'),
+          document.fonts.load('84px GlowSansSC')
+        ]),
+        new Promise(resolve => setTimeout(resolve, 5000))
       ]);
     } catch (_) {}
 
-    // 等待图片加载
     let attempts = 0;
     while (this.imagesLoaded < 2 && attempts < 50) {
       await new Promise(r => setTimeout(r, 100));
@@ -91,6 +93,7 @@ export default class LogoCanvas {
     }
 
     loading.classList.add('hidden');
+
     c.font = font;
     this.textMetricsL = c.measureText(this.textL);
     this.textMetricsR = c.measureText(this.textR);
@@ -308,4 +311,4 @@ export default class LogoCanvas {
       })
       .catch((e) => console.error("can't copy", e));
   }
-}
+  }
