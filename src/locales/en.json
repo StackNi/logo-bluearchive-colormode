@@ -11,5 +11,6 @@
   "main-font": "Main font: ",
   "github-repo": "GitHub repo",
   "color-left": "Left Color",
-  "color-right": "Right Color"
+  "color-right": "Right Color",
+  "fallback-font": "GlowSansSC-Normal-Heavy"
 }
