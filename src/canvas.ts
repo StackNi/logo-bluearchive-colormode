@@ -38,9 +38,9 @@ export default class LogoCanvas {
     this.canvas.width = canvasWidth;
 
     this.haloImg = new Image();
-    this.haloImg.src = './images/halo.png';
+    this.haloImg.src = '/logo-bluearchive-colormode/images/halo.png';
     this.crossImg = new Image();
-    this.crossImg.src = './images/cross.png';
+    this.crossImg.src = '/logo-bluearchive-colormode/images/cross.png';
 
     this.bindEvent();
   }
@@ -288,4 +288,4 @@ export default class LogoCanvas {
       })
       .catch((e) => console.error("can't copy", e));
   }
-}
+          }
