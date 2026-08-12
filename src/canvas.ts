@@ -1,6 +1,5 @@
 import debounce from 'lodash-es/debounce';
 import settings from './settings';
-import loadFont from './utils/loadFont';
 const {
   canvasHeight,
   canvasWidth,
@@ -26,12 +25,10 @@ export default class LogoCanvas {
   private textWidthR = 0;
   private graphOffset = graphOffset;
   private transparentBg = false;
-
-  // ========== 颜色属性 ==========
   private textColorL = '#128AFA';
   private textColorR = '#2B2B2B';
 
-  // ========== 图片属性 ==========
+  // 图片直接写在类里
   private haloImg: HTMLImageElement;
   private crossImg: HTMLImageElement;
 
@@ -41,7 +38,7 @@ export default class LogoCanvas {
     this.canvas.height = canvasHeight;
     this.canvas.width = canvasWidth;
 
-    // ========== 直接加载图片 ==========
+    // 直接加载图片
     this.haloImg = new Image();
     this.haloImg.src = '/logo-bluearchive-colormode/images/halo.png';
 
@@ -51,7 +48,6 @@ export default class LogoCanvas {
     this.bindEvent();
   }
 
-  // ========== 设置颜色方法 ==========
   public setTextColorL(color: string) {
     this.textColorL = color;
     this.draw();
@@ -65,7 +61,10 @@ export default class LogoCanvas {
     const loading = document.querySelector('#loading')!;
     loading.classList.remove('hidden');
     const c = this.ctx;
-    await loadFont(this.textL + this.textR);
+
+    // ========== 删除 loadFont 调用 ==========
+    // await loadFont(this.textL + this.textR);
+
     loading.classList.add('hidden');
     c.font = font;
     this.textMetricsL = c.measureText(this.textL);
@@ -93,14 +92,12 @@ export default class LogoCanvas {
     }
     c.font = font;
 
-    // ========== 左侧文字 ==========
     c.fillStyle = this.textColorL;
     c.textAlign = 'end';
     c.setTransform(1, 0, horizontalTilt, 1, 0, 0);
     c.fillText(this.textL, this.canvasWidthL, this.canvas.height * textBaseLine);
     c.resetTransform();
 
-    // ========== 光环 ==========
     if (this.haloImg.complete && this.haloImg.naturalWidth > 0) {
       c.drawImage(
         this.haloImg,
@@ -109,11 +106,8 @@ export default class LogoCanvas {
         canvasHeight,
         canvasHeight
       );
-    } else {
-      console.warn('halo 图片未加载完成');
     }
 
-    // ========== 右侧文字 ==========
     c.fillStyle = this.textColorR;
     c.textAlign = 'start';
     if (this.transparentBg) {
@@ -127,7 +121,6 @@ export default class LogoCanvas {
     c.fillText(this.textR, this.canvasWidthL, this.canvas.height * textBaseLine);
     c.resetTransform();
 
-    // ========== 十字架 ==========
     const graph = {
       X: this.canvasWidthL - this.canvas.height / 2 + graphOffset.X,
       Y: this.graphOffset.Y,
@@ -159,8 +152,6 @@ export default class LogoCanvas {
         canvasHeight,
         canvasHeight
       );
-    } else {
-      console.warn('cross 图片未加载完成');
     }
   }
 
@@ -296,4 +287,4 @@ export default class LogoCanvas {
       })
       .catch((e) => console.error("can't copy", e));
   }
-}
+      }
