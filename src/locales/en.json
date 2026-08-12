@@ -9,8 +9,9 @@
   "halo-cross": "Halo & Cross position",
   "font-title": "Used Fonts",
   "main-font": "Main font: ",
+  "fallback-font": "Fallback font: ",
+  "glow": "Wêlai Glow Sans",
   "github-repo": "GitHub repo",
   "color-left": "Left Color",
-  "color-right": "Right Color",
-  "fallback-font": "GlowSansSC-Normal-Heavy"
+  "color-right": "Right Color"
 }
