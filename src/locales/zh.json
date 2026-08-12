@@ -11,5 +11,6 @@
   "main-font": "主要字体：",
   "github-repo": "GitHub 仓库",
   "color-left": "左侧颜色",
-  "color-right": "右侧颜色"
+  "color-right": "右侧颜色",
+  "fallback-font": "未来荧黑"
 }
