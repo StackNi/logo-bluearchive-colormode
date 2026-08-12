@@ -10,7 +10,7 @@
 
 <body>
   <header>
-    <h1 class="i18n text-center font-bold" data-i18n="heading">BlueArchive-Style Logo Generator</h1>
+    <h1 class="i18n mt-6 mb-4 text-center font-bold text-2xl" data-i18n="heading">BlueArchive-Style Logo Generator</h1>
   </header>
   <section class="canvas-wrapper flex place-content-center">
     <div class="relative my-auto">
@@ -36,15 +36,21 @@
           Background</span>
       </label>
     </div>
-    <div class="my-2 flex justify-center gap-8">
-      <label class="cursor-pointer label justify-start">
-        <span class="i18n label-text text-base mr-3" data-i18n="color-left">Left Color</span>
-        <input type="color" id="colorL" value="#128AFA" class="w-12 h-12 rounded-lg cursor-pointer" />
-      </label>
-      <label class="cursor-pointer label justify-start">
-        <span class="i18n label-text text-base mr-3" data-i18n="color-right">Right Color</span>
-        <input type="color" id="colorR" value="#2B2B2B" class="w-12 h-12 rounded-lg cursor-pointer" />
-      </label>
+    <div class="my-2 flex flex-col gap-2 items-center">
+      <div class="flex items-center gap-4">
+        <span class="i18n label-text w-20" data-i18n="color-left">Left Color</span>
+        <input type="range" id="hueL" min="0" max="360" value="210" class="range range-primary range-xs w-40" />
+        <input type="range" id="satL" min="0" max="100" value="90" class="range range-primary range-xs w-40" />
+        <input type="range" id="valL" min="0" max="100" value="98" class="range range-primary range-xs w-40" />
+        <span id="colorPreviewL" class="w-8 h-8 rounded border" style="background:#128AFA;"></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="i18n label-text w-20" data-i18n="color-right">Right Color</span>
+        <input type="range" id="hueR" min="0" max="360" value="0" class="range range-secondary range-xs w-40" />
+        <input type="range" id="satR" min="0" max="100" value="0" class="range range-secondary range-xs w-40" />
+        <input type="range" id="valR" min="0" max="100" value="17" class="range range-secondary range-xs w-40" />
+        <span id="colorPreviewR" class="w-8 h-8 rounded border" style="background:#2B2B2B;"></span>
+      </div>
     </div>
     <div class="mx-6 my-4">
       <div class="collapse collapse-arrow bg-base-100">
