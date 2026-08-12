@@ -1,5 +1,6 @@
 import debounce from 'lodash-es/debounce';
 import settings from './settings';
+import loadFont from './utils/loadFont';
 const {
   canvasHeight,
   canvasWidth,
@@ -27,8 +28,6 @@ export default class LogoCanvas {
   private transparentBg = false;
   private textColorL = '#128AFA';
   private textColorR = '#2B2B2B';
-
-  // 图片直接写在类里
   private haloImg: HTMLImageElement;
   private crossImg: HTMLImageElement;
 
@@ -38,10 +37,8 @@ export default class LogoCanvas {
     this.canvas.height = canvasHeight;
     this.canvas.width = canvasWidth;
 
-    // 直接加载图片
     this.haloImg = new Image();
     this.haloImg.src = '/logo-bluearchive-colormode/images/halo.png';
-
     this.crossImg = new Image();
     this.crossImg.src = '/logo-bluearchive-colormode/images/cross.png';
 
@@ -62,8 +59,12 @@ export default class LogoCanvas {
     loading.classList.remove('hidden');
     const c = this.ctx;
 
-    // ========== 删除 loadFont 调用 ==========
-    // await loadFont(this.textL + this.textR);
+    try {
+      await Promise.race([
+        loadFont(this.textL + this.textR),
+        new Promise((resolve) => setTimeout(resolve, 3000))
+      ]);
+    } catch (_) {}
 
     loading.classList.add('hidden');
     c.font = font;
@@ -287,4 +288,4 @@ export default class LogoCanvas {
       })
       .catch((e) => console.error("can't copy", e));
   }
-      }
+        }
