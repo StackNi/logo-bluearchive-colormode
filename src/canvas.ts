@@ -11,7 +11,7 @@ const {
   paddingX,
   hollowPath,
 } = settings;
-const font = `${fontSize}px RoGSanSrfStd-Bd, GlowSansSC-Normal-Heavy_diff, apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif`;
+const font = `${fontSize}px RoGSanSrfStd-Bd, apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif`;
 
 export default class LogoCanvas {
   public canvas: HTMLCanvasElement;
@@ -269,7 +269,7 @@ export default class LogoCanvas {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${this.textL}${this.textR}_ba-style@nulla.top.png`;
+      a.download = `${this.textL}${this.textR}_ba-style@StackNi.png`;
       a.click();
       URL.revokeObjectURL(url);
     });
@@ -288,4 +288,4 @@ export default class LogoCanvas {
       })
       .catch((e) => console.error("can't copy", e));
   }
-        }
+    }
