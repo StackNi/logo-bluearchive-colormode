@@ -1,6 +1,5 @@
 import debounce from 'lodash-es/debounce';
 import settings from './settings';
-
 const {
   canvasHeight,
   canvasWidth,
@@ -10,8 +9,7 @@ const {
   paddingX,
   hollowPath,
 } = settings;
-
-const font = `84px 'RoGSanSrfStd-Bd', sans-serif`;
+const font = `84px 'RoGSanSrfStd-Bd', 'GlowSansSC', sans-serif`;
 
 export default class LogoCanvas {
   public canvas: HTMLCanvasElement;
@@ -38,7 +36,6 @@ export default class LogoCanvas {
     this.canvas.height = canvasHeight;
     this.canvas.width = canvasWidth;
 
-    // 创建图片并强制加载
     this.haloImg = new Image();
     this.haloImg.src = '/logo-bluearchive-colormode/images/halo.png';
     this.haloImg.onload = () => {
@@ -78,7 +75,15 @@ export default class LogoCanvas {
     loading.classList.remove('hidden');
     const c = this.ctx;
 
-    // 等待图片加载完成（最多等待5秒）
+    // 强制等待字体加载完成
+    try {
+      await Promise.race([
+        document.fonts.load('84px RoGSanSrfStd-Bd'),
+        new Promise(resolve => setTimeout(resolve, 3000))
+      ]);
+    } catch (_) {}
+
+    // 等待图片加载
     let attempts = 0;
     while (this.imagesLoaded < 2 && attempts < 50) {
       await new Promise(r => setTimeout(r, 100));
@@ -86,7 +91,6 @@ export default class LogoCanvas {
     }
 
     loading.classList.add('hidden');
-
     c.font = font;
     this.textMetricsL = c.measureText(this.textL);
     this.textMetricsR = c.measureText(this.textR);
@@ -119,7 +123,6 @@ export default class LogoCanvas {
     c.fillText(this.textL, this.canvasWidthL, this.canvas.height * textBaseLine);
     c.resetTransform();
 
-    // 直接绘制图片（已确保加载完成）
     c.drawImage(
       this.haloImg,
       this.canvasWidthL - this.canvas.height / 2 + this.graphOffset.X,
