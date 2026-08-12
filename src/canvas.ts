@@ -1,6 +1,5 @@
 import debounce from 'lodash-es/debounce';
 import settings from './settings';
-import loadFont from './utils/loadFont';
 const {
   canvasHeight,
   canvasWidth,
@@ -58,13 +57,6 @@ export default class LogoCanvas {
     const loading = document.querySelector('#loading')!;
     loading.classList.remove('hidden');
     const c = this.ctx;
-
-    try {
-      await Promise.race([
-        loadFont(this.textL + this.textR),
-        new Promise((resolve) => setTimeout(resolve, 3000))
-      ]);
-    } catch (_) {}
 
     loading.classList.add('hidden');
     c.font = font;
@@ -288,4 +280,4 @@ export default class LogoCanvas {
       })
       .catch((e) => console.error("can't copy", e));
   }
-          }
+}
