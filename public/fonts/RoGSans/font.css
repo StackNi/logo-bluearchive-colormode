@@ -1,16 +1,7 @@
 @font-face {
   font-family: RoGSanSrfStd-Bd;
-  src: url('./RoGSanSrfStd-Bd_other_mod.woff2') format('woff2');
+  src: url('/logo-bluearchive-colormode/fonts/RoGSans/RoGSanSrfStd-Bd.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-  unicode-range: U+0-4DFF, U+A000-10FFFF;
-}
-@font-face {
-  font-family: RoGSanSrfStd-Bd;
-  src: url('./RoGSanSrfStd-Bd_CJK.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+4E00-9FFF;
 }
