@@ -3,7 +3,6 @@ import settings from './settings';
 const {
   canvasHeight,
   canvasWidth,
-  fontSize,
   horizontalTilt,
   textBaseLine,
   graphOffset,
@@ -280,4 +279,4 @@ export default class LogoCanvas {
       })
       .catch((e) => console.error("can't copy", e));
   }
-}
+      }
